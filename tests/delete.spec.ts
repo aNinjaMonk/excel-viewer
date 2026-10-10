@@ -32,7 +32,8 @@ test('cancel button closes dialog and preserves selection', async ({ page }) => 
   await page.locator('dialog[open]').getByRole('button', { name: 'Cancel' }).click()
 
   await expect(page.locator('dialog[open]')).not.toBeVisible()
-  await expect(page.locator('tbody tr')).toHaveCount(4)
+  // Scope to .table-wrap to exclude the dialog's own preview table (still in DOM when closed)
+  await expect(page.locator('.table-wrap tbody tr')).toHaveCount(4)
   // Alice's row still selected
   await expect(page.getByText('1 selected')).toBeVisible()
 })
@@ -43,7 +44,7 @@ test('Escape key closes dialog without deleting', async ({ page }) => {
   await page.keyboard.press('Escape')
 
   await expect(page.locator('dialog[open]')).not.toBeVisible()
-  await expect(page.locator('tbody tr')).toHaveCount(4)
+  await expect(page.locator('.table-wrap tbody tr')).toHaveCount(4)
 })
 
 // TC-19
@@ -56,7 +57,7 @@ test('clicking backdrop closes dialog without deleting', async ({ page }) => {
   await page.mouse.click(10, 10)
 
   await expect(dialog).not.toBeVisible()
-  await expect(page.locator('tbody tr')).toHaveCount(4)
+  await expect(page.locator('.table-wrap tbody tr')).toHaveCount(4)
 })
 
 // TC-20
@@ -72,9 +73,9 @@ test('confirming delete triggers download and updates table', async ({ page }) =
   expect(download.suggestedFilename()).toBe('basic.csv')
 
   // Table updated: Alice gone, 3 rows remain
-  await expect(page.locator('tbody tr')).toHaveCount(3)
-  await expect(page.locator('tbody tr', { hasText: 'Alice' })).toHaveCount(0)
-  await expect(page.locator('tbody tr', { hasText: 'Bob' })).toBeVisible()
+  await expect(page.locator('.table-wrap tbody tr')).toHaveCount(3)
+  await expect(page.locator('.table-wrap tbody tr', { hasText: 'Alice' })).toHaveCount(0)
+  await expect(page.locator('.table-wrap tbody tr', { hasText: 'Bob' })).toBeVisible()
 
   // Selection cleared
   await expect(page.getByText('selected')).not.toBeVisible()

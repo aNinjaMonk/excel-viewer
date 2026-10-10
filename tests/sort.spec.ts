@@ -14,7 +14,8 @@ test.describe('sort — CSV', () => {
 
     await expect(scoreHeader).toContainText('▲')
 
-    const names = page.locator('tbody tr td:first-child')
+    // td:nth-child(2) = Name column (first td is the checkbox select-col)
+    const names = page.locator('tbody tr td:nth-child(2)')
     await expect(names.nth(0)).toHaveText('Charlie') // 78.3
     await expect(names.nth(1)).toHaveText('Bob')     // 82
     await expect(names.nth(2)).toHaveText('Diana')   // 91.2
@@ -29,7 +30,7 @@ test.describe('sort — CSV', () => {
 
     await expect(scoreHeader).toContainText('▼')
 
-    const names = page.locator('tbody tr td:first-child')
+    const names = page.locator('tbody tr td:nth-child(2)')
     await expect(names.nth(0)).toHaveText('Alice')   // 95.5
     await expect(names.nth(1)).toHaveText('Diana')   // 91.2
     await expect(names.nth(2)).toHaveText('Bob')     // 82
@@ -47,7 +48,7 @@ test.describe('sort — CSV', () => {
     await expect(scoreHeader).not.toContainText('▼')
 
     // Original CSV order
-    const names = page.locator('tbody tr td:first-child')
+    const names = page.locator('tbody tr td:nth-child(2)')
     await expect(names.nth(0)).toHaveText('Alice')
     await expect(names.nth(1)).toHaveText('Bob')
     await expect(names.nth(2)).toHaveText('Charlie')
@@ -61,7 +62,7 @@ test.describe('sort — CSV', () => {
 
     await expect(cityHeader).toContainText('▲')
 
-    const names = page.locator('tbody tr td:first-child')
+    const names = page.locator('tbody tr td:nth-child(2)')
     await expect(names.nth(0)).toHaveText('Charlie') // Bangalore
     await expect(names.nth(1)).toHaveText('Diana')   // Chennai
     await expect(names.nth(2)).toHaveText('Bob')     // Delhi
@@ -76,7 +77,7 @@ test.describe('sort — CSV', () => {
     await page.locator('input[type="search"]').fill('a') // Alice, Charlie, Diana
     await expect(page.getByText('3 of 4 rows')).toBeVisible()
 
-    const names = page.locator('tbody tr td:first-child')
+    const names = page.locator('tbody tr td:nth-child(2)')
     await expect(names).toHaveCount(3)
     await expect(names.nth(0)).toHaveText('Charlie') // 78.3
     await expect(names.nth(1)).toHaveText('Diana')   // 91.2

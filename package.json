@@ -9,7 +9,8 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "PLAYWRIGHT_JUNIT_OUTPUT_NAME=test-results/junit.xml playwright test --reporter=junit"
   },
   "dependencies": {
     "exceljs": "^4.4.0",
